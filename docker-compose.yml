@@ -10,7 +10,9 @@ services:
     # https://github.com/kerberos/agent
     agent:
         image: bh.cr/kerberos_io/agent
-        network_mode: host
+        network_mode: bridge
+        ports:
+            - "80:80"
         tty: true
         restart: always
         volumes:
@@ -26,3 +28,33 @@ services:
             io.balena.features.supervisor-api: 1
         environment:
             SET_HOSTNAME: videosurveillance
+
+    rtsp-simple-server:
+        image: kerberos/rtsp-simple-server:latest-rpi
+        privileged: true
+        restart: always
+        network_mode: bridge
+        volumes:
+            - '/run/udev:/run/udev:ro'
+            - 'rtsp-simple-server.yml:/rtsp-simple-server.yml'
+        # environment:
+            # MTX_PATHS_CAM_SOURCE: rpiCamera
+        tmpfs:
+            - '/dev/shm:exec'
+        #     labels:
+        #         io.balena.features.kernel-modules: '1'
+    # mediamtx:
+    #     image: bluenviron/mediamtx:latest-rpi
+    #     privileged: true
+    #     restart: always
+    #     network_mode: bridge
+    #     volumes:
+    #         - '/run/udev:/run/udev:ro'
+    #         - 'mediamtx.yml:mediamtx.yml:rw'
+    #     environment:
+    #         MTX_PATHS_CAM_SOURCE: rpiCamera
+    #     tmpfs:
+    #         - '/dev/shm:exec'
+    #     labels:
+    #         io.balena.features.kernel-modules: '1'
+
