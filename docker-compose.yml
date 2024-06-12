@@ -10,7 +10,7 @@ services:
     # https://github.com/kerberos/agent
     agent:
         image: bh.cr/kerberos_io/agent
-        network_mode: bridge
+        network_mode: host
         ports:
             - "80:80"
         tty: true
@@ -28,29 +28,55 @@ services:
             io.balena.features.supervisor-api: 1
         environment:
             SET_HOSTNAME: videosurveillance
-
+    # rtsp:
+    #     image: mpromonet/v4l2rtspserver
+    #     restart: no
+    #     ports:
+    #         - "8554:8554"
+    #     devices:
+    #         - "/dev/video0:/dev/video0"        
+    # streamer:
+    #     build: ./streamer
+    #     restart: always
+    #     privileged: true
+        # ports:
+            # - "554:554"
     rtsp-simple-server:
-        image: kerberos/rtsp-simple-server:latest-rpi
+        build: ./rtsp-simple-server
+        restart: no
         privileged: true
-        restart: always
-        network_mode: bridge
-        volumes:
-            - '/run/udev:/run/udev:ro'
-            - 'rtsp-simple-server.yml:/rtsp-simple-server.yml'
-        # environment:
-            # MTX_PATHS_CAM_SOURCE: rpiCamera
-        tmpfs:
-            - '/dev/shm:exec'
-        #     labels:
-        #         io.balena.features.kernel-modules: '1'
+        network_mode: host
+        # ports:
+        #     - "554:554"
+        #     - "8554:8554"
+    # rtsp-simple-server:
+    #     # image: bluenviron/mediamtx:latest-rpi
+    #     image: kerberos/rtsp-simple-server:latest-rpi
+    #     privileged: true
+    #     restart: no
+    #     network_mode: bridge
+    #     devices:
+    #         - "/dev/video0:/dev/video0"
+    #         # - ""
+    #     # volumes:
+    #         - '/run/udev:/run/udev'
+    #         # - '/dev:/dev:ro'
+    #         - './rtsp-simple-server:/rtsp-simple-server.yml:rw'
+    #     environment:
+    #         # MTX_PATHS_CAM_SOURCE: rpiCamera
+    #         UDEV: on
+    #     tmpfs:
+    #         - '/dev/shm:rw'
+    #     labels:
+    #         io.balena.features.kernel-modules: '1'
     # mediamtx:
     #     image: bluenviron/mediamtx:latest-rpi
     #     privileged: true
     #     restart: always
-    #     network_mode: bridge
+    #     network_mode: host
     #     volumes:
     #         - '/run/udev:/run/udev:ro'
-    #         - 'mediamtx.yml:mediamtx.yml:rw'
+    #         # - '${PWD}/mediamtx.yml:mediamtx.yml:rw'
     #     environment:
     #         MTX_PATHS_CAM_SOURCE: rpiCamera
     #     tmpfs:

@@ -1,0 +1,4 @@
+# picamera
+# picamera2
+# libcamera
+simplejpeg

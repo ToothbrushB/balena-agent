@@ -1,0 +1,30 @@
+FROM balenalib/raspberrypi3-python:latest-bookworm
+
+# pip install python deps from requirements.txt
+# For caching until requirements.txt changes
+# RUN install_packages    libcamera-dev
+# RUN install_packages    libcamera-apps
+# RUN install_packages    python3
+# RUN install_packages    python3-picamera2
+# RUN install_packages    libfreetype6
+# RUN install_packages    python3-libcamera
+# RUN install_packages    python3-kms++
+RUN install_packages    ffmpeg 
+RUN install_packages vlc
+RUN sed -i 's/geteuid/getppid/' /usr/bin/vlc
+RUN install_packages    v4l-utils
+# RUN apt-get install python3-picamera2
+# COPY ./requirements.txt /requirements.txt
+# RUN READTHEDOCS=True pip install -r /requirements.txt
+#install vlc and allow run as root
+
+# RUN pip uninstall picamera2
+
+COPY . /usr/src/app
+WORKDIR /usr/src/app
+
+RUN usermod -a -G video root
+
+ENV UDEV=on
+CMD ["bash","start.sh"]
+

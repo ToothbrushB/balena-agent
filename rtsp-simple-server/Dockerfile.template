@@ -1,0 +1,5 @@
+FROM bluenviron/mediamtx:latest-rpi
+RUN install_packages    ffmpeg 
+
+COPY mediamtx.yml /mediamtx.yml
+ENTRYPOINT [ "/mediamtx" ]
