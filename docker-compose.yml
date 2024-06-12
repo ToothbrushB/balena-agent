@@ -10,7 +10,6 @@ services:
     # https://github.com/kerberos/agent
     agent:
         image: bh.cr/kerberos_io/agent
-        network_mode: host
         ports:
             - "80:80"
         tty: true
@@ -43,9 +42,8 @@ services:
             # - "554:554"
     rtsp-simple-server:
         build: ./rtsp-simple-server
-        restart: no
+        restart: always
         privileged: true
-        network_mode: host
         # ports:
         #     - "554:554"
         #     - "8554:8554"
