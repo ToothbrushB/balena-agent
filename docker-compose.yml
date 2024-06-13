@@ -9,7 +9,8 @@ services:
 
     # https://github.com/kerberos/agent
     agent:
-        image: bh.cr/kerberos_io/agent
+        # image: bh.cr/kerberos_io/agent
+        build: ./agent
         ports:
             - "80:80"
         tty: true
@@ -47,6 +48,9 @@ services:
         # ports:
         #     - "554:554"
         #     - "8554:8554"
+
+    warp-test:
+        build: ./warp-test
     # rtsp-simple-server:
     #     # image: bluenviron/mediamtx:latest-rpi
     #     image: kerberos/rtsp-simple-server:latest-rpi

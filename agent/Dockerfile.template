@@ -1,0 +1,7 @@
+FROM bh.cr/kerberos_io/agent
+
+ENTRYPOINT ["./main",
+                "-action",
+                "run",
+                "-port",
+                "80"]
